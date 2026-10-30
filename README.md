@@ -40,11 +40,11 @@
 docker compose up -d --build
 ```
 
-默认映射 `8787` 端口，数据落在 `./data`。首次启动会在日志里打印**带令牌的入口地址**：
+默认映射宿主机 `8686` → 容器内 `8787`（宿主机 8787 常被其他服务占用），数据落在 `./data`。首次启动会在日志里打印**带令牌的入口地址**：
 
 ```
-Web 界面    : http://localhost:8787
-带令牌入口  : http://localhost:8787/?token=wharf_xxxxxxxx
+Web 界面    : http://localhost:8686
+带令牌入口  : http://localhost:8686/?token=wharf_xxxxxxxx
 ```
 
 打开带令牌链接即可，令牌会存进浏览器 localStorage，地址栏随即被清理。
@@ -79,10 +79,10 @@ NAS 上运行：
 
 ```bash
 docker run -d --name wharf \
-  -p 8787:8787 \
+  -p 8686:8787 \
   -v /volume1/docker/wharf/data:/data \
   -e TZ=Asia/Shanghai \
-  -e PUBLIC_URL=http://192.168.2.x:8787 \
+  -e PUBLIC_URL=http://192.168.2.x:8686 \
   --restart unless-stopped \
   wharf:arm64
 ```
