@@ -58,7 +58,16 @@ npm start          # 或 npm run dev（node --watch）
 
 需要 Node.js 18+（推荐 22/24）。
 
-### ARM64 NAS 构建
+### 预构建镜像（GHCR）
+
+仓库内置 [.github/workflows/docker.yml](.github/workflows/docker.yml)，每次推送 `main` 会自动构建 `linux/amd64` + `linux/arm64` 双架构镜像：
+
+```bash
+docker login ghcr.io                     # 包默认私有，用自己的 GitHub 账号登录
+docker pull ghcr.io/xkx121029/wharf:latest
+```
+
+### 在 NAS 上本地构建
 
 ```bash
 docker buildx build --platform linux/arm64 -t wharf:arm64 --load .
