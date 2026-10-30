@@ -1,0 +1,16 @@
+services:
+  wharf:
+    build: .
+    image: wharf:1.0.0
+    container_name: wharf
+    restart: unless-stopped
+    ports:
+      - "8787:8787"
+    environment:
+      # 留空时首次启动会自动生成，写入 /data/.token，并打印在 docker logs 中
+      AUTH_TOKEN: ${AUTH_TOKEN:-}
+      # 对外地址，用于生成给 AI 的下载链接；例如 http://192.168.2.16:8787
+      PUBLIC_URL: ${PUBLIC_URL:-}
+      TZ: Asia/Shanghai
+    volumes:
+      - ./data:/data

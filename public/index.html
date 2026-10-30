@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wharf · AI 网盘工作区</title>
+  <meta name="description" content="双视图单文件存储的 AI 网盘：网盘只读，工作区可写，AI 通过 MCP / ACP 接入。">
+  <link rel="stylesheet" href="/app.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232C6E49'/%3E%3Cpath d='M9 8v16M16 8v16M23 8v16' stroke='%23F4F2EC' stroke-width='2.5'/%3E%3C/svg%3E">
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <span class="mark" aria-hidden="true"></span>
+      <span class="brand-name">Wharf</span>
+      <span class="brand-sub">AI 网盘 · 工作区</span>
+    </div>
+    <div class="top-actions">
+      <span class="conn" id="conn"><i></i><span id="connText">连接中</span></span>
+      <button class="btn ghost" id="btnFeedToggle">AI 动态</button>
+      <button class="btn ghost" id="btnAccess">接入信息</button>
+      <button class="btn primary" id="btnUpload">上传文件</button>
+    </div>
+  </header>
+
+  <aside class="sidebar">
+    <div class="side-label">区域</div>
+    <nav class="zones" id="zones"></nav>
+    <div class="usage" id="usage"></div>
+    <div class="side-foot">
+      <button class="btn ghost block" id="btnToken">访问令牌</button>
+      <p class="hint">网盘是仓库，只有移到工作区后 AI 才能改写。两个视图共用同一份数据。</p>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="toolbar">
+      <div class="crumbs" id="crumbs"></div>
+      <div class="tools">
+        <label class="search">
+          <span class="search-icon" aria-hidden="true"></span>
+          <input id="search" type="search" placeholder="搜索当前区域" autocomplete="off" spellcheck="false">
+        </label>
+        <button class="btn ghost" id="btnNewFolder">新建文件夹</button>
+        <button class="btn ghost" id="btnRefresh" title="刷新">刷新</button>
+      </div>
+    </div>
+
+    <div class="bulk" id="bulk" hidden>
+      <span class="bulk-count" id="bulkCount">已选 0 项</span>
+      <div class="bulk-actions" id="bulkActions"></div>
+    </div>
+
+    <div class="filewrap">
+      <div class="filehead">
+        <span class="col-check"><input type="checkbox" id="selectAll" aria-label="全选"></span>
+        <span class="col-name">名称</span>
+        <span class="col-state">状态</span>
+        <span class="col-size">大小</span>
+        <span class="col-time">更新时间</span>
+        <span class="col-more"></span>
+      </div>
+      <div class="files" id="files"></div>
+    </div>
+
+    <div class="drop-hint" id="dropHint">松开上传到当前目录</div>
+    <div class="uploads" id="uploads"></div>
+  </main>
+
+  <aside class="feed" id="feed">
+    <div class="feed-head">
+      <div class="feed-title-row">
+        <h2>AI 动态</h2>
+        <span class="live" id="liveDot"><i></i>实时</span>
+      </div>
+      <div class="filters" id="filters">
+        <button data-filter="all" class="on">全部</button>
+        <button data-filter="ai">AI</button>
+        <button data-filter="ui">我</button>
+      </div>
+      <p class="feed-sum" id="feedSum"></p>
+    </div>
+    <div class="events" id="events"></div>
+  </aside>
+</div>
+
+<div class="toasts" id="toasts"></div>
+<div class="scrim" id="scrim" hidden></div>
+<section class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" hidden>
+  <div class="sheet-grip" aria-hidden="true"></div>
+  <header class="sheet-head">
+    <div>
+      <h2 id="sheetTitle"></h2>
+      <div class="sheet-meta" id="sheetMeta"></div>
+    </div>
+    <button class="icon-btn" id="sheetClose" aria-label="关闭">×</button>
+  </header>
+  <div class="sheet-body" id="sheetBody"></div>
+  <footer class="sheet-foot" id="sheetFoot"></footer>
+</section>
+
+<input type="file" id="fileInput" multiple hidden>
+<script src="/app.js" defer></script>
+</body>
+</html>
