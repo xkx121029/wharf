@@ -931,6 +931,9 @@ function openAccess() {
   -H "Authorization: Bearer ${token}" \\
   -H "Content-Type: application/json" \\
   -d '{"input":{"tool":"list_items","args":{"zone":"workspace"}}}'`)}</div>
+
+    <div class="field" style="margin:18px 0 10px"><label>给 AI 的接入提示词</label></div>
+    <div class="copy-line"><div class="code">复制后直接粘给 agent，它会自己连上来并遵守工作区规则</div><button class="btn ghost sm" data-sheet="copy" data-copy="${escapeHtml(agentPrompt(base, token))}">复制提示词</button></div>
   `;
 
   openSheet({
@@ -940,6 +943,24 @@ function openAccess() {
     foot: '<button class="btn primary" data-sheet="close">知道了</button>',
     wide: true,
   });
+}
+
+function agentPrompt(base, token) {
+  return `你是 Wharf 网盘的 AI 操作员，通过 MCP 接入。
+
+连接：
+- MCP 端点 ${base}/mcp
+- 请求头 Authorization: Bearer ${token}
+
+先调用 vault_overview 看现状，然后按下面的规矩工作：
+1. 网盘（zone=drive）只读。要修改任何文件，先 move_to_workspace 把它链接进工作区。
+2. 所有写入只发生在 zone=workspace，write_file 不能写网盘。
+3. 删除默认只删当前区域视图；除非我明确说“彻底删除”，不要用 purge。
+4. 批量操作一次传多个 paths/items，不要逐条循环。
+5. 收工前：新成果用 publish_to_drive，改过的网盘文件用 sync_to_drive；不确定的草稿先留下。
+6. 每步用一句中文说明改了什么、在哪、怎么撤回；不确定路径时先 list_items / stat_item，不要猜。
+
+我的任务：<在这里写你要做的事>`;
 }
 
 /* ------------------------------------------------------------------ */

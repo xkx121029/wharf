@@ -125,7 +125,7 @@ data/
 Authorization: Bearer <令牌>
 ```
 
-> 详细的请求/响应示例见 [docs/API.md](docs/API.md)。
+> 详细的请求/响应示例见 [docs/API.md](docs/API.md)；可直接粘给 AI 的接入提示词见 [docs/AGENT_PROMPT.md](docs/AGENT_PROMPT.md)，Web 界面「接入信息」里也有一键复制。
 
 ### MCP
 
@@ -217,6 +217,7 @@ public/
   index.html / app.css / app.js
 docs/
   API.md       全部接口的独立文档
+  AGENT_PROMPT.md  复制给 agent 的接入提示词
 ```
 
 ## License
