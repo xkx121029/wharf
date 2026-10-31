@@ -1,10 +1,15 @@
-FROM node:22-alpine
+# 基础镜像可替换为国内加速源，例如 --build-arg BASE_IMAGE=docker.m.daocloud.io/library/node:22-alpine
+ARG BASE_IMAGE=node:22-alpine
+FROM ${BASE_IMAGE}
+
+ARG NPM_REGISTRY=https://registry.npmjs.org
 
 WORKDIR /app
 ENV NODE_ENV=production
 
 COPY package.json package-lock.json* ./
-RUN npm ci --omit=dev || npm install --omit=dev
+RUN npm config set registry ${NPM_REGISTRY} \
+    && (npm ci --omit=dev || npm install --omit=dev)
 
 COPY server ./server
 COPY public ./public
